@@ -16,14 +16,13 @@ def schedule_for_the_day():
     ui.blank_line()
     FILE_PATH = "timetable_simple.csv"
     timetable = storage.get_table_from_file(FILE_PATH)
-    print('Im in your schedule')
 
     ui.blank_line()
     ui.printing_string("Your schedule for today:")
     if len(timetable) == 0:
         ui.printing_string("(empty)")
     else:
-        ui.print_table(timetable)
+        ui.print_schedule_for_the_day(timetable)
 
 
 def choose():
@@ -31,21 +30,20 @@ def choose():
     # timetable = storage.get_table_from_file(FILE_PATH)
     FILE_PATH = "timetable_simple.csv"
     timetable = storage.get_table_from_file(FILE_PATH)
-    print('Im in choose')
 
     # TODO: printing for the specific day schedule!
     # inputs = ui.get_inputs(["Please enter a name of the day of the week"])
     # ui.print_one_day(timetable, inputs[0].lower())
     # ui.print_one_day(timetable, 'monday')
 
-    print('-----------------------------')
-    ui.print_schedule_for_the_day(timetable)
-    print('-----------------------------')
+    # print('-----------------------------')
+    # ui.print_schedule_for_the_day(timetable)
+    # print('-----------------------------')
 
     inputs = ui.get_inputs(["Please enter a letter (s/c/q): "], "")
     option = inputs[0]
     if option == "s":
-        print('Im in scheduling')
+        ui.blank_line()
         print('-----------------------------')
         # timetable = [[""] * 24 for day in range(7)]  
         # timetable[0][15] = "meeting with Jane"
@@ -53,7 +51,7 @@ def choose():
 
         storage.write_table_to_file(FILE_PATH, schedule(timetable))
         ui.printing_string("Meeting added")
-
+        ui.print_schedule_for_the_day(timetable)
     elif option == "c":
         print('Im in canceling')
         pass

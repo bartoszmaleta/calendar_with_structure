@@ -1,5 +1,12 @@
 def print_schedule_for_the_day(table):
-    print(table)
+    for meeting in table:
+        meeting_hour = int(meeting[2])
+        meeting_duration = int(meeting[1])
+        meeting_end_hour = meeting_hour + meeting_duration 
+        meeting_title = meeting[0]
+        print(meeting_hour, "-", meeting_end_hour, meeting_title)
+
+    pass
 
 
 def print_table(table):
