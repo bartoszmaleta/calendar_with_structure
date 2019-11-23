@@ -1,3 +1,11 @@
+def print_schedule_for_the_day(table):
+    print(table)
+
+
+def print_table(table):
+    print(table)
+
+
 def print_menu(title, list_options, exit_message):
     print()
     print(title)
@@ -25,3 +33,32 @@ def get_inputs(list_labels, title):
         user_input = input()
         inputs.append(user_input)
     return inputs
+
+
+# def print_one_day(table, day):
+#     day.lower()
+#     if day == "monday":
+#         index_of_first_day_of_the_week = 0
+#         print(table[0])
+#         for index, hour in enumerate(table[index_of_first_day_of_the_week]):
+#             print("{}. {}".format(index + 1, hour))
+#     elif day == "tuesday":
+#         print(table[1])
+#     elif day == "wednesday":
+#         print(table[2])
+#     elif day == "thursday":
+#         print(table[3])
+#     elif day == "friday":
+#         print(table[4])
+#     elif day == "saturday":
+#         print(table[5])
+#     elif day == "sunday":
+#         print(table[6])
+
+
+def blank_line():
+    print() 
+
+
+def printing_string(string):
+    print(string)
