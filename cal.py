@@ -23,6 +23,19 @@ import sys
 # - Update README.md                                                                    DONE
 
 
+def sorting_list_by_start_time_of_the_meeting(table):
+    sorted_list = sorted(table, key=lambda x: x[2])
+
+    return sorted_list 
+
+
+def compact_meetings(table):
+    timetable = sorting_list_by_start_time_of_the_meeting(table)
+    print(timetable)
+
+    pass
+
+
 def total_number_of_meeting_hours(table):
     list_of_duration_of_meetings = []
     INDEX_OF_DURATION_TIME_OF_MEETING_IN_TIMETABLE = 1
@@ -130,7 +143,7 @@ def schedule(table):
         # input_meeting_duration = int(ask_input[INDEX_OF_DURATION_OF_MEETING]) # NOT USED right now
         # input_end_meeting_time = input_meeting_hour + input_meeting_duration      # NOT USED right now
 
-        if input_meeting_hour >= 8 and input_meeting_hour <= 18:        # TODO: change magic numbers
+        if input_meeting_hour >= 8 and input_meeting_hour <= 17:        # TODO: change magic numbers
             table.append(ask_input)
             is_running = False
             
@@ -169,6 +182,7 @@ def schedule_for_the_day():
     ui.blank_line()
     FILE_PATH = "timetable_simple.csv"
     timetable = storage.get_table_from_file(FILE_PATH)
+    timetable = sorting_list_by_start_time_of_the_meeting(timetable)
 
     ui.blank_line()
     ui.line_of_equals()
@@ -185,13 +199,14 @@ def choose():
     # timetable = storage.get_table_from_file(FILE_PATH)
     FILE_PATH = "timetable_simple.csv"
     timetable = storage.get_table_from_file(FILE_PATH)
+    timetable = sorting_list_by_start_time_of_the_meeting(timetable)
 
     # TODO: printing for the specific day schedule!
     # inputs = ui.get_inputs(["Please enter a name of the day of the week"])
     # ui.print_one_day(timetable, inputs[0].lower())
     # ui.print_one_day(timetable, 'monday')
 
-    inputs = ui.get_inputs(["Please enter a letter (s/c/u/q/t): "], "")
+    inputs = ui.get_inputs(["Please enter a letter (s/c/u/q/t/e): "], "")
     option = inputs[0]
     if option == "s":
         ui.clear_terminal()
@@ -215,6 +230,9 @@ def choose():
     elif option == "t":
         total_hours = total_number_of_meeting_hours(timetable)
         ui.print_result(total_hours, "Total number of hours today:")
+
+    elif option == 'e':
+        compact_meetings(timetable)
     elif option == "q":
         print('Im in quiting')
         sys.exit(0)
@@ -229,7 +247,8 @@ def handle_menu():
     options = ["schedule a new meeting",
                "cancel an existing meeting",
                "updating a meeting",
-               "total time of meeting in the day"]
+               "total time of meeting in the day",
+               "everything earlier"]
 
     menu_title = "Main menu"
     menu_title = ui.return_headline_for_menu_title_(menu_title)
