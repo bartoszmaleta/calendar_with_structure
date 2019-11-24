@@ -9,6 +9,7 @@ import sys
 #   like this:
 # - It should be possible to edit a meeting (change title, duration, or time). 
 #   Make sure to check if the new meeting time is validated.
+# - Make canceling the meeting by index (from enumerate) of meeting
 
 
 def total_number_of_meeting_hours(table):

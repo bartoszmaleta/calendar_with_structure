@@ -1,3 +1,6 @@
+# TODO: magic numbers!!!!!!!
+
+
 def print_schedule_for_the_day(table):
     print("++++++++++++++++++++++")
     for meeting in table:
