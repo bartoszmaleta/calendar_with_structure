@@ -2,6 +2,14 @@ import ui as ui
 import storage as storage
 import sys
 
+# TODO:
+# - It should not be possible to schedule a meeting that overlaps with existing meeting
+# - There should be a "compact meetings" feature that moves meetings to 
+#   earliest possible time (starting from 8). For instance, if we have a schedule 
+#   like this:
+# - It should be possible to edit a meeting (change title, duration, or time). 
+#   Make sure to check if the new meeting time is validated.
+
 
 def total_number_of_meeting_hours(table):
     list_of_duration_of_meetings = []
@@ -86,7 +94,8 @@ def remove(table, start_time):
             table.pop(index)
             list_with_meeting_to_remove.append(index)
     
-    if len(list_with_meeting_to_remove) == 0:
+    length_of_list_if_list_is_empty = 0
+    if len(list_with_meeting_to_remove) == length_of_list_if_list_is_empty:
         ui.blank_line
         ui.print_dashes_for_canceling_error()
         ui.print_error_message("ERROR: There is no meeting starting at that time!")
@@ -111,7 +120,7 @@ def schedule(table):
         input_meeting_duration = int(ask_input[INDEX_OF_DURATION_OF_MEETING])
         input_end_meeting_time = input_meeting_hour + input_meeting_duration
 
-        if input_meeting_hour >= 8 and input_meeting_hour <= 18:
+        if input_meeting_hour >= 8 and input_meeting_hour <= 18:        # TODO: change magic numbers
             table.append(ask_input)
             is_running = False
             
