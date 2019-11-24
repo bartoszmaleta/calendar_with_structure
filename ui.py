@@ -69,3 +69,9 @@ def blank_line():
 
 def printing_string(string):
     print(string)
+
+
+def print_dashes_for_canceling_error():
+    error_message_cancel = "ERROR: There is no meeting starting at that time!"
+    length_of_error_message = len(error_message_cancel)
+    print("-" * length_of_error_message)
