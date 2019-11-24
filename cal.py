@@ -3,6 +3,19 @@ import storage as storage
 import sys
 
 
+def total_number_of_meeting_hours(table):
+    list_of_duration_of_meetings = []
+    INDEX_OF_DURATION_TIME_OF_MEETING_IN_TIMETABLE = 1
+
+    for meeting in table:
+        list_of_duration_of_meetings.append(int(meeting[INDEX_OF_DURATION_TIME_OF_MEETING_IN_TIMETABLE]))
+
+    sum_of_all_duration_of_meetings = 0
+    for duration in list_of_duration_of_meetings:
+        sum_of_all_duration_of_meetings += duration
+
+    return(sum_of_all_duration_of_meetings)
+
 # def validate_on_working_hours(table, start_time, duration_time):
 #     if input_meeting_hour >= 8 and input_meeting_hour <= 18:
 #             table.append(ask_input)
@@ -139,11 +152,13 @@ def schedule_for_the_day():
     timetable = storage.get_table_from_file(FILE_PATH)
 
     ui.blank_line()
+    ui.line_of_equals()
     ui.print_text("Your schedule for today:")
     if len(timetable) == 0:
         ui.print_text("(empty)")
     else:
         ui.print_schedule_for_the_day(timetable)
+    ui.line_of_equals()
 
 
 def choose():
@@ -157,9 +172,10 @@ def choose():
     # ui.print_one_day(timetable, inputs[0].lower())
     # ui.print_one_day(timetable, 'monday')
 
-    inputs = ui.get_inputs(["Please enter a letter (s/c/u/q): "], "")
+    inputs = ui.get_inputs(["Please enter a letter (s/c/u/q/t): "], "")
     option = inputs[0]
     if option == "s":
+        ui.clear_terminal()
         ui.blank_line()
         print('-----------------------------')
         # timetable = [[""] * 24 for day in range(7)]  
@@ -178,6 +194,9 @@ def choose():
         ui.print_enumerate_table(timetable)
         to_be_updated = ui.get_inputs(['Insert index of file to update'], "UPDATING")
         storage.write_table_to_file(FILE_PATH, edit_a_meeting(timetable, find_id(timetable, to_be_updated)))
+    elif option == "t":
+        total_hours = total_number_of_meeting_hours(timetable)
+        ui.print_result(total_hours, "Total number of hours today:")
     elif option == "q":
         print('Im in quiting')
         sys.exit(0)
@@ -191,7 +210,8 @@ def choose():
 def handle_menu():
     options = ["schedule a new meeting",
                "cancel an existing meeting",
-               "updating a meeting"]
+               "updating a meeting",
+               "total time of meeting in the day"]
 
     menu_title = "Main menu"
     menu_title = ui.return_headline_for_menu_title_(menu_title)

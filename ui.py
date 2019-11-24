@@ -1,11 +1,12 @@
 def print_schedule_for_the_day(table):
+    print("++++++++++++++++++++++")
     for meeting in table:
         meeting_hour = int(meeting[2])
         meeting_duration = int(meeting[1])
         meeting_end_hour = meeting_hour + meeting_duration 
         meeting_title = meeting[0]
         print(meeting_hour, "-", meeting_end_hour, meeting_title)
-
+    print("++++++++++++++++++++++")
     pass
 
 
@@ -105,3 +106,17 @@ def print_enumerate_table(table):
         # print(meeting_hour, "-", meeting_end_hour, meeting_title)
         # print('-------------------------')
         print(f'{index + 1}. {meeting_hour} - {meeting_end_hour} {meeting_title}')
+
+
+def print_result(result, label):
+    blank_line()
+    print(label)
+    print(result)
+
+
+def line_of_equals():
+    print("====================================================")
+
+
+def clear_terminal():
+    print("\033c")
