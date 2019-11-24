@@ -36,19 +36,36 @@ def remove(table, start_time):
     if len(list_with_meeting_to_remove) == 0:
         ui.blank_line
         ui.print_dashes_for_canceling_error()
-        ui.printing_string("ERROR: There is no meeting starting at that time!")
+        ui.print_error_message("ERROR: There is no meeting starting at that time!")
         ui.print_dashes_for_canceling_error()
         ui.blank_line
     else:
-        ui.printing_string("Meeting canceled")
+        ui.print_text("Meeting canceled")
     return table
 
 
 def schedule(table):
-    ui.printing_string('Schedule a new meeting')
-    TITLE_LIST = ['Enter a meeting title ', 'Enter duration in hours (1 or 2): ', 'Enter start time: ']
-    ask_input = ui.get_inputs(TITLE_LIST, 'Please enter information about a meeting')
-    table.append(ask_input)
+    INDEX_OF_START_TIME_OF_MEETING = 2
+    INDEX_OF_DURATION_OF_MEETING = 1
+
+    while True:
+        ui.print_text('Schedule a new meeting')
+        TITLE_LIST = ['Enter a meeting title ', 'Enter duration in hours (1 or 2): ', 'Enter start time: ']
+        ask_input = ui.get_inputs(TITLE_LIST, 'Please enter information about a meeting')
+        
+        meeting_hour = int(ask_input[INDEX_OF_START_TIME_OF_MEETING])
+        meeting_duration = int(ask_input[INDEX_OF_DURATION_OF_MEETING])
+
+        if meeting_hour >= 8 and meeting_hour <= 18:
+            table.append(ask_input)
+            break
+        else:
+            ui.print_error_message("ERROR: Meeting is outside of your working hours (8 to 18)!")
+    # while True:
+    #     copied_table = copy_table(table)
+        
+    #     if copied_table != table:
+    #         break
 
     return table
 
@@ -59,9 +76,9 @@ def schedule_for_the_day():
     timetable = storage.get_table_from_file(FILE_PATH)
 
     ui.blank_line()
-    ui.printing_string("Your schedule for today:")
+    ui.print_text("Your schedule for today:")
     if len(timetable) == 0:
-        ui.printing_string("(empty)")
+        ui.print_text("(empty)")
     else:
         ui.print_schedule_for_the_day(timetable)
 
@@ -87,7 +104,7 @@ def choose():
         # storage.write_table_to_file(FILE_PATH, timetable)
 
         storage.write_table_to_file(FILE_PATH, schedule(timetable))
-        ui.printing_string("Meeting added")
+        ui.print_text("Meeting added")
         ui.print_schedule_for_the_day(timetable)
     elif option == "c":
         # OLD WAY, without error handling (wrong start time input)

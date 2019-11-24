@@ -67,7 +67,7 @@ def blank_line():
     print() 
 
 
-def printing_string(string):
+def print_text(string):
     print(string)
 
 
@@ -75,3 +75,17 @@ def print_dashes_for_canceling_error():
     error_message_cancel = "ERROR: There is no meeting starting at that time!"
     length_of_error_message = len(error_message_cancel)
     print("-" * length_of_error_message)
+
+
+def print_error_message(message):
+    """
+    Displays an error message (example: ``Error: @message``)
+
+    Args:
+        message (str): error message to be displayed
+
+    Returns:
+        None: This function doesn't return anything it only prints to console.
+    """
+    print('Error! WARNING! WTF? {}'.format(message))
+    # your code
