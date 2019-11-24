@@ -3,6 +3,50 @@ import storage as storage
 import sys
 
 
+# def validate_on_working_hours(table, start_time, duration_time):
+#     if input_meeting_hour >= 8 and input_meeting_hour <= 18:
+#             table.append(ask_input)
+#             is_running = False
+#         else:
+#             ui.print_error_message("ERROR: Meeting is outside of your working hours (8 to 18)!")        # TODO: should ask again only about start time!
+
+
+def edit_a_meeting(table, title_of_meeting):
+    ui.print_text('Schedule a new meeting')
+    TITLE_LIST = ['Enter a meeting title ', 'Enter duration in hours (1 or 2): ', 'Enter start time: ']
+    ask_input = ui.get_inputs(TITLE_LIST, 'Please enter information about a meeting')
+    
+    INDEX_OF_TITLE_OF_MEETING_IN_TIMETABLE = 0
+    INDEX_OF_DURATION_TIME_OF_MEETING_IN_TIMETABLE = 1
+    INDEX_OF_START_TIME_OF_MEETING_IN_TIMETABLE = 2
+    
+    INDEX_OF_TITLE_OF_MEETING_IN_ASK_INPUT = 0
+    INDEX_OF_DURATION_TIME_OF_MEETING_IN_ASK_INPUT = 1
+    INDEX_OF_START_TIME_OF_MEETING_IN_ASK_INPUT = 2
+    
+    for title_of_meeting_to_edit, meeting in enumerate(table):
+        if meeting[0] == title_of_meeting:
+            meeting[INDEX_OF_TITLE_OF_MEETING_IN_TIMETABLE] = ask_input[INDEX_OF_TITLE_OF_MEETING_IN_ASK_INPUT]
+            meeting[INDEX_OF_DURATION_TIME_OF_MEETING_IN_TIMETABLE] = ask_input[INDEX_OF_DURATION_TIME_OF_MEETING_IN_ASK_INPUT]
+            meeting[INDEX_OF_START_TIME_OF_MEETING_IN_TIMETABLE] = ask_input[INDEX_OF_START_TIME_OF_MEETING_IN_ASK_INPUT]
+
+    return table
+
+
+def find_id(table, index):
+    # print(index)
+    # print(type(index))
+    # index = int(index[0])
+    INDEX_POSITION = 0
+    INDEX_OF_FIRST_ELEMENT_OF_INDEX_LIST = 0
+    NUMBER_TO_DISTRACT_BECAUES_INDEXING_IS_FROM_ZER0 = 1
+
+    title_of_meeting = table[int(index[INDEX_OF_FIRST_ELEMENT_OF_INDEX_LIST]) - NUMBER_TO_DISTRACT_BECAUES_INDEXING_IS_FROM_ZER0][INDEX_POSITION]
+    # number_of_id = number_of_id - 1
+    # print(title_of_meeting)
+    return title_of_meeting
+
+
 def copy_table(table):
     copied_table = list(table)
     return copied_table
@@ -25,11 +69,6 @@ def remove(table, start_time):
     list_with_meeting_to_remove = []
 
     for index, meeting in enumerate(table):
-        # print(type(meeting[INDEX_OF_START_TIME_OF_MEETING]))
-        # print(meeting[INDEX_OF_START_TIME_OF_MEETING])
-        # print(type(start_time))
-        # print(start_time)
-        # print(meeting)
         if meeting[INDEX_OF_START_TIME_OF_MEETING] == start_time:
             table.pop(index)
             list_with_meeting_to_remove.append(index)
@@ -73,16 +112,18 @@ def schedule(table):
             #     print(type(meeting_time))
             #     print(input_meeting_hour)
             #     print(type(input_meeting_hour))
-
-            #     # if meeting_time != input_meeting_hour and meeting_time != input_end_meeting_time and meeting_end_time != input_meeting_hour and meeting_end_time != input_end_meeting_time:
-            #     if meeting_time != input_meeting_hour:
+                
+            #     if meeting_time == input_meeting_hour or meeting_time == input_end_meeting_time or meeting_end_time == input_meeting_hour or meeting_end_time == input_end_meeting_time:
+            #         ui.print_error_message("ERROR: Meeting overlaps with existing meeting!")
+            #         break
+            #     else:
             #         table.append(ask_input)
             #         print('I AM HEEEERE')
             #         is_running = False
-            #     else:
-            #         ui.print_error_message("ERROR: Meeting overlaps with existing meeting!")
+            #         break
         else:
             ui.print_error_message("ERROR: Meeting is outside of your working hours (8 to 18)!")        # TODO: should ask again only about start time!
+    
     # while True:
     #     copied_table = copy_table(table)
         
@@ -116,7 +157,7 @@ def choose():
     # ui.print_one_day(timetable, inputs[0].lower())
     # ui.print_one_day(timetable, 'monday')
 
-    inputs = ui.get_inputs(["Please enter a letter (s/c/q): "], "")
+    inputs = ui.get_inputs(["Please enter a letter (s/c/u/q): "], "")
     option = inputs[0]
     if option == "s":
         ui.blank_line()
@@ -133,6 +174,10 @@ def choose():
         # storage.write_table_to_file(FILE_PATH, remove(timetable, ui.get_inputs(["Enter the start time of the meeting you want to remove"], "REMOVING"))) 
         schedule_for_the_day()
         cancel_meeting(FILE_PATH, timetable)
+    elif option == "u":
+        ui.print_enumerate_table(timetable)
+        to_be_updated = ui.get_inputs(['Insert index of file to update'], "UPDATING")
+        storage.write_table_to_file(FILE_PATH, edit_a_meeting(timetable, find_id(timetable, to_be_updated)))
     elif option == "q":
         print('Im in quiting')
         sys.exit(0)
@@ -145,7 +190,8 @@ def choose():
 
 def handle_menu():
     options = ["schedule a new meeting",
-               "cancel an existing meeting"]
+               "cancel an existing meeting",
+               "updating a meeting"]
 
     menu_title = "Main menu"
     menu_title = ui.return_headline_for_menu_title_(menu_title)
