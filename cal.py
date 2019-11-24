@@ -9,13 +9,14 @@ def copy_table(table):
 
 
 def cancel_meeting(FILE_PATH, timetable):
-    while True:
+    is_running = True
+    while is_running:
         copied_table = copy_table(timetable)
         storage.write_table_to_file(FILE_PATH, remove(timetable, ui.get_inputs(["Enter the start time of the meeting you want to remove"], "REMOVING")))
         # print(copied_table)
         # print(timetable)
         if copied_table != timetable:
-            break
+            is_running = False
 
 
 def remove(table, start_time):
@@ -48,19 +49,40 @@ def schedule(table):
     INDEX_OF_START_TIME_OF_MEETING = 2
     INDEX_OF_DURATION_OF_MEETING = 1
 
-    while True:
+    is_running = True
+    while is_running:
         ui.print_text('Schedule a new meeting')
         TITLE_LIST = ['Enter a meeting title ', 'Enter duration in hours (1 or 2): ', 'Enter start time: ']
         ask_input = ui.get_inputs(TITLE_LIST, 'Please enter information about a meeting')
         
-        meeting_hour = int(ask_input[INDEX_OF_START_TIME_OF_MEETING])
-        meeting_duration = int(ask_input[INDEX_OF_DURATION_OF_MEETING])
+        input_meeting_hour = int(ask_input[INDEX_OF_START_TIME_OF_MEETING])
+        input_meeting_duration = int(ask_input[INDEX_OF_DURATION_OF_MEETING])
+        input_end_meeting_time = input_meeting_hour + input_meeting_duration
 
-        if meeting_hour >= 8 and meeting_hour <= 18:
+        if input_meeting_hour >= 8 and input_meeting_hour <= 18:
             table.append(ask_input)
-            break
+            is_running = False
+            
+            # TODO: It should not be possible to schedule a meeting that overlaps with existing meeting!!!!!!!!!!!!!!!!!!!!
+            # for meeting in table:
+            #     meeting_time = int(meeting[INDEX_OF_START_TIME_OF_MEETING])
+            #     meeting_duration = int(meeting[INDEX_OF_DURATION_OF_MEETING])
+            #     meeting_end_time = meeting_time + meeting_duration
+                
+            #     print(meeting_time)
+            #     print(type(meeting_time))
+            #     print(input_meeting_hour)
+            #     print(type(input_meeting_hour))
+
+            #     # if meeting_time != input_meeting_hour and meeting_time != input_end_meeting_time and meeting_end_time != input_meeting_hour and meeting_end_time != input_end_meeting_time:
+            #     if meeting_time != input_meeting_hour:
+            #         table.append(ask_input)
+            #         print('I AM HEEEERE')
+            #         is_running = False
+            #     else:
+            #         ui.print_error_message("ERROR: Meeting overlaps with existing meeting!")
         else:
-            ui.print_error_message("ERROR: Meeting is outside of your working hours (8 to 18)!")
+            ui.print_error_message("ERROR: Meeting is outside of your working hours (8 to 18)!")        # TODO: should ask again only about start time!
     # while True:
     #     copied_table = copy_table(table)
         
