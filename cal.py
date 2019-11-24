@@ -3,13 +3,24 @@ import storage as storage
 import sys
 
 # TODO:
-# - It should not be possible to schedule a meeting that overlaps with existing meeting
+# - It should not be possible to schedule a meeting that overlaps 
+#   with existing meeting                                                              NOT DONE
 # - There should be a "compact meetings" feature that moves meetings to 
-#   earliest possible time (starting from 8). For instance, if we have a schedule 
-#   like this:
-# - It should be possible to edit a meeting (change title, duration, or time). 
-#   Make sure to check if the new meeting time is validated.
-# - Make canceling the meeting by index (from enumerate) of meeting
+#   earliest possible time (starting from 8). For instance, if we 
+#   have a schedule like this:
+#  9 - 10 Meeting A
+# 12 - 13 Meeting B
+# 13 - 15 Meeting C
+
+# Then, after compacting, it should be changed to:
+#  8 -  9 Meeting A
+#  9 - 10 Meeting B
+# 10 - 12 Meeting C                                                                     NOT DONE
+
+# - It should be possible to edit a meeting (change title, duration, or time).          DONE
+# - Make sure to check if the new meeting time is validated.                            NOT DONE                            
+# - Make canceling the meeting by index (from enumerate) of meeting                     DONE
+# - Update README.md                                                                    DONE
 
 
 def total_number_of_meeting_hours(table):
@@ -55,10 +66,7 @@ def edit_a_meeting(table, title_of_meeting):
     return table
 
 
-def find_id(table, index):
-    # print(index)
-    # print(type(index))
-    # index = int(index[0])
+def find_title_by_index_from_enumerate_table(table, index):
     INDEX_POSITION = 0
     INDEX_OF_FIRST_ELEMENT_OF_INDEX_LIST = 0
     NUMBER_TO_DISTRACT_BECAUES_INDEXING_IS_FROM_ZER0 = 1
@@ -78,23 +86,23 @@ def cancel_meeting(FILE_PATH, timetable):
     is_running = True
     while is_running:
         copied_table = copy_table(timetable)
-        storage.write_table_to_file(FILE_PATH, remove(timetable, ui.get_inputs(["Enter the start time of the meeting you want to remove"], "REMOVING")))
+        # storage.write_table_to_file(FILE_PATH, remove(timetable, ui.get_inputs(["Enter the start time of the meeting you want to remove"], "REMOVING")))
+        storage.write_table_to_file(FILE_PATH, remove(timetable, find_title_by_index_from_enumerate_table(timetable, ui.get_inputs(["Enter index of the meeting you want to remove"], "REMOVING"))))
         # print(copied_table)
         # print(timetable)
         if copied_table != timetable:
             is_running = False
 
 
-def remove(table, start_time):
-    INDEX_OF_START_TIME_OF_MEETING = 2
-    start_time = start_time[0]
+def remove(table, title):
+    TITLE_INDEX_POSITION = 0
     list_with_meeting_to_remove = []
 
     for index, meeting in enumerate(table):
-        if meeting[INDEX_OF_START_TIME_OF_MEETING] == start_time:
+        if meeting[TITLE_INDEX_POSITION] == title:
             table.pop(index)
             list_with_meeting_to_remove.append(index)
-    
+
     length_of_list_if_list_is_empty = 0
     if len(list_with_meeting_to_remove) == length_of_list_if_list_is_empty:
         ui.blank_line
@@ -104,12 +112,13 @@ def remove(table, start_time):
         ui.blank_line
     else:
         ui.print_text("Meeting canceled")
+
     return table
 
 
 def schedule(table):
-    INDEX_OF_START_TIME_OF_MEETING = 2
-    INDEX_OF_DURATION_OF_MEETING = 1
+    INDEX_OF_START_TIME_OF_MEETING = 2  
+    # INDEX_OF_DURATION_OF_MEETING = 1      # NOT USED right nows
 
     is_running = True
     while is_running:
@@ -118,8 +127,8 @@ def schedule(table):
         ask_input = ui.get_inputs(TITLE_LIST, 'Please enter information about a meeting')
         
         input_meeting_hour = int(ask_input[INDEX_OF_START_TIME_OF_MEETING])
-        input_meeting_duration = int(ask_input[INDEX_OF_DURATION_OF_MEETING])
-        input_end_meeting_time = input_meeting_hour + input_meeting_duration
+        # input_meeting_duration = int(ask_input[INDEX_OF_DURATION_OF_MEETING]) # NOT USED right now
+        # input_end_meeting_time = input_meeting_hour + input_meeting_duration      # NOT USED right now
 
         if input_meeting_hour >= 8 and input_meeting_hour <= 18:        # TODO: change magic numbers
             table.append(ask_input)
@@ -196,14 +205,13 @@ def choose():
         ui.print_text("Meeting added")
         ui.print_schedule_for_the_day(timetable)
     elif option == "c":
-        # OLD WAY, without error handling (wrong start time input)
-        # storage.write_table_to_file(FILE_PATH, remove(timetable, ui.get_inputs(["Enter the start time of the meeting you want to remove"], "REMOVING"))) 
-        schedule_for_the_day()
+        # schedule_for_the_day()
+        ui.print_enumerate_table(timetable)
         cancel_meeting(FILE_PATH, timetable)
     elif option == "u":
         ui.print_enumerate_table(timetable)
         to_be_updated = ui.get_inputs(['Insert index of file to update'], "UPDATING")
-        storage.write_table_to_file(FILE_PATH, edit_a_meeting(timetable, find_id(timetable, to_be_updated)))
+        storage.write_table_to_file(FILE_PATH, edit_a_meeting(timetable, find_title_by_index_from_enumerate_table(timetable, to_be_updated)))
     elif option == "t":
         total_hours = total_number_of_meeting_hours(timetable)
         ui.print_result(total_hours, "Total number of hours today:")

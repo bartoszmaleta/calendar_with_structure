@@ -96,9 +96,6 @@ def print_error_message(message):
 
 
 def print_enumerate_table(table):
-    # for i, item in enumerate(table, 1):
-        # print('{}. {}'.format(i, item))
-    
     for index, meeting in enumerate(table):
         
         meeting_hour = int(meeting[2])
